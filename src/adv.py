@@ -65,13 +65,54 @@ while True:
     cmd = str(input("\nChoose a direction or Q to quit: \n\n"))
     print("\n\n\n------------------------------\n")
 
+    # if (cmd == "p"):
+    #    item_select = str(input("please select an item: "))
+    #    if (playerOne.current_room.items):
+    #        playerOne.add_item(item_select)
+
+    # if (cmd == "i"):
+    #     print(f"Inventory: {playerOne.items}")
+
     if (cmd == "" or not str):
+
         print("Please enter a direction or Q to exit the game. \n")
     if (cmd == "q"):
         print("Thanks for playing!")
+
         break
     elif (cmd in directions):
         try:
             playerOne.current_room = getattr(playerOne.current_room, f"{cmd}_to")
         except:
             print("That direction doesn't exist..Try another direction..")
+
+    elif (cmd == "i"):
+        print("Inventory: ", end = "")
+        print([item.name for item in playerOne.items])
+    else:
+        cmds = cmd.split(" ")
+        if (len(cmds) != 2):
+            print("Bad command")
+        else:
+            verb,obj = cmds
+            if (verb == "take"):
+                try:
+                    item = [x for x in playerOne.current_room.items if x.name == obj][0]
+                    playerOne.current_room.remove_item(item)
+                    playerOne.add_item(item)
+                    item.on_take()
+                except IndexError:
+                    print("Item not found")
+
+            elif (verb == "drop"):
+                try:
+                    item = [x for x in playerOne.items if x.name == obj][0]
+                    playerOne.remove_item(item)
+                    playerOne.current_room.add_item(item)
+                    item.on_drop()
+                except IndexError:
+                    print("Player not holding that item")
+
+            else:
+                print("Bad command")
+
