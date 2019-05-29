@@ -1,5 +1,6 @@
 from room import Room
-
+from player import Player
+from item import Item
 # Declare all the rooms
 
 room = {
@@ -21,7 +22,6 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
-
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
@@ -33,12 +33,17 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Items in rooms
+
+room['foyer'].add_item(Item("Torch", "an unlit torch"))
+room['overlook'].add_item(Item("Matches", "a box of matches"))
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
+playerOne = Player("Shawn", room["outside"])
 # Write a loop that:
 #
 # * Prints the current room name
@@ -49,3 +54,24 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+directions = ["n", "s", "w", "e"]
+
+while True:
+    print(f"\nCurrent room: {playerOne.current_room.name}")
+    print(f"Room description: {playerOne.current_room.description}")
+    print(f"Items around the room: \n", end = "")
+    print([item.name for item in playerOne.current_room.items])
+
+    cmd = str(input("\nChoose a direction or Q to quit: \n\n"))
+    print("\n\n\n------------------------------\n")
+
+    if (cmd == "" or not str):
+        print("Please enter a direction or Q to exit the game. \n")
+    if (cmd == "q"):
+        print("Thanks for playing!")
+        break
+    elif (cmd in directions):
+        try:
+            playerOne.current_room = getattr(playerOne.current_room, f"{cmd}_to")
+        except:
+            print("That direction doesn't exist..Try another direction..")
