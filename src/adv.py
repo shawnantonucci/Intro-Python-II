@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from item import Item
+from item import LightSource
 # Declare all the rooms
 
 room = {
@@ -20,6 +21,8 @@ to north. The smell of gold permeates the air."""),
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
+
+    'closet': Room("Closet", """A dark closet"""),
 }
 
 # Link rooms together
@@ -30,13 +33,14 @@ room['foyer'].n_to = room['overlook']
 room['foyer'].e_to = room['narrow']
 room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
+room['narrow'].e_to = room['closet']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
 # Items in rooms
 
-room['foyer'].add_item(Item("Torch", "an unlit torch"))
-room['overlook'].add_item(Item("Matches", "a box of matches"))
+room['foyer'].add_item(LightSource("torch", "an unlit torch"))
+room['foyer'].add_item(Item("book", "a useless book"))
 
 #
 # Main
@@ -59,7 +63,7 @@ directions = ["n", "s", "w", "e"]
 while True:
     print(f"\nCurrent room: {playerOne.current_room.name}")
     print(f"Room description: {playerOne.current_room.description}")
-    print(f"Items around the room: \n", end = "")
+    print(f"Items around the room: \n", end="")
     print([item.name for item in playerOne.current_room.items])
 
     cmd = str(input("\nChoose a direction or Q to quit: \n\n"))
@@ -82,22 +86,24 @@ while True:
         break
     elif (cmd in directions):
         try:
-            playerOne.current_room = getattr(playerOne.current_room, f"{cmd}_to")
+            playerOne.current_room = getattr(
+                playerOne.current_room, f"{cmd}_to")
         except:
             print("That direction doesn't exist..Try another direction..")
 
     elif (cmd == "i"):
-        print("Inventory: ", end = "")
+        print("Inventory: ", end="")
         print([item.name for item in playerOne.items])
     else:
         cmds = cmd.split(" ")
         if (len(cmds) != 2):
             print("Bad command")
         else:
-            verb,obj = cmds
+            verb, obj = cmds
             if (verb == "take"):
                 try:
-                    item = [x for x in playerOne.current_room.items if x.name == obj][0]
+                    item = [
+                        x for x in playerOne.current_room.items if x.name == obj][0]
                     playerOne.current_room.remove_item(item)
                     playerOne.add_item(item)
                     item.on_take()
@@ -105,13 +111,20 @@ while True:
                     print("Item not found")
 
             elif (verb == "drop"):
-                try:
+                # if (playerOne.items != "torch"):
                     item = [x for x in playerOne.items if x.name == obj][0]
                     playerOne.remove_item(item)
                     playerOne.current_room.add_item(item)
                     item.on_drop()
-                except IndexError:
-                    print("Player not holding that item")
+
+                # elif (playerOne.items == "torch"):
+                #     cmd = input("Are you sure? y/n \n")
+                #     if (cmd == "y"):
+                #          print(f"{playerOne.items.name} dropped")
+                #     elif (cmd == "n"):
+                #          print("Good call")
+                #     else:
+                #          print("Player not holding that item")
 
             else:
                 print("Bad command")
