@@ -6,7 +6,7 @@ from item import LightSource
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-    "North of you, the cave mount beckons", True),
+                     "North of you, the cave mount beckons", True),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east.""", True),
@@ -15,14 +15,15 @@ passages run north and east.""", True),
 into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm.""", False),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air.""", False),
+    'narrow':   Room("Narrow Passage", """A dark quite passage. There is a door to the east
+and a door to the north""", False),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south.""", False),
 
-    'closet': Room("Closet", """A dark closet""", False),
+    'closet': Room("Closet", """Just a normal closet with cleaning supplies in it. there is a
+    toolbox in the corner of the closet. The only exit is to the west""", False),
 }
 
 # Link rooms together
@@ -34,6 +35,7 @@ room['foyer'].e_to = room['narrow']
 room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].e_to = room['closet']
+room['closet'].w_to = room['narrow']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
@@ -115,10 +117,10 @@ while True:
 
             elif (verb == "drop"):
                 # if (playerOne.items != "torch"):
-                    item = [x for x in playerOne.items if x.name == obj][0]
-                    if item.on_drop():
-                        playerOne.remove_item(item)
-                        playerOne.current_room.add_item(item)
+                item = [x for x in playerOne.items if x.name == obj][0]
+                if item.on_drop():
+                    playerOne.remove_item(item)
+                    playerOne.current_room.add_item(item)
 
                 # elif (playerOne.items == "torch"):
                 #     cmd = input("Are you sure? y/n \n")
@@ -131,4 +133,3 @@ while True:
 
             else:
                 print("Bad command")
-
