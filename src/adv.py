@@ -2,6 +2,8 @@ from room import Room
 from player import Player
 from item import Item
 from item import LightSource
+from enemy import Enemy
+from enemy import GiantSpider
 # Declare all the rooms
 
 room = {
@@ -42,7 +44,7 @@ room['treasure'].s_to = room['narrow']
 # Items in rooms
 
 room['foyer'].add_item(LightSource("torch", "an unlit torch", 0))
-room['foyer'].add_item(Item("book", "a book on lockpicking", 0))
+room['foyer'].add_enemy(Enemy("Boss Spider", 100, 10, room['foyer']))
 room['overlook'].add_item(Item("book", "a book on lockpicking", 0))
 
 #
@@ -54,9 +56,9 @@ room['overlook'].add_item(Item("book", "a book on lockpicking", 0))
 player = Player("Shawn", room['outside'])
 
 if (player.currentRoom.is_light == True or [item.name == "torch" for item in player.items]):
-        print(player.currentRoom)
+    print(player.currentRoom)
 elif (player.currentRoom.is_light == False):
-        print("Its pitch black in here. Need a light source")
+    print("Its pitch black in here. Need a light source")
 
 
 # Write a loop that:
@@ -70,7 +72,7 @@ elif (player.currentRoom.is_light == False):
 #
 # If the user enters "q", quit the game.
 
-while True:
+while not player.is_alive() and not player.victory:
     cmd = input("-> ")
     if cmd in ["n", "s", "e", "w"]:
         player.travel(cmd)
@@ -80,16 +82,16 @@ while True:
     #     print("I did not understand that command\n")
 
     if (cmd == "i"):
-        print("Inventory: ", end="")
+        print("Inventory: ", end="Inventory: Empty")
         print(player.currentRoom)
         print([item.name for item in player.items])
     else:
         cmds = cmd.split(" ")
         if (len(cmds) != 2):
-             if cmd in ["n", "s", "e", "w"]:
-                 continue
-             else:
-                 print("Bad command")
+            if cmd in ["n", "s", "e", "w"]:
+                continue
+            else:
+                print("Bad command")
         else:
             verb, obj = cmds
             if (verb == "take"):

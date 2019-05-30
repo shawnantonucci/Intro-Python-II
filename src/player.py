@@ -28,8 +28,8 @@ class Player:
         self.items.remove(item)
 
     def is_alive(self):
-        return self.hp &amp;gt; 0
+        return self.hp == 0
 
     def print_inventory(self):
         for item in self.inventory:
-            print(item, '\n')
+            print(f"Inventory: {item}, '\n'")
