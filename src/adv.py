@@ -40,7 +40,7 @@ room['treasure'].s_to = room['narrow']
 # Items in rooms
 
 room['foyer'].add_item(LightSource("torch", "an unlit torch"))
-room['foyer'].add_item(Item("book", "a useless book"))
+room['overlook'].add_item(Item("book", "a book on lockpicking"))
 
 #
 # Main
@@ -62,13 +62,12 @@ directions = ["n", "s", "w", "e"]
 
 while True:
     print(f"\nCurrent room: {playerOne.current_room.name}")
-    if (playerOne.current_room.is_light == True):
+    if (playerOne.current_room.is_light == True or [item.name == "torch" for item in playerOne.items]):
         print(f"Room description: {playerOne.current_room.description}")
         print(f"Items around the room: \n", end="")
         print([item.name for item in playerOne.current_room.items])
     elif (playerOne.current_room.is_light == False):
         print("Its pitch black in here. Need a light source")
-
 
     cmd = str(input("\nChoose a direction or Q to quit: \n\n"))
     print("\n\n\n------------------------------\n")
@@ -117,9 +116,9 @@ while True:
             elif (verb == "drop"):
                 # if (playerOne.items != "torch"):
                     item = [x for x in playerOne.items if x.name == obj][0]
-                    playerOne.remove_item(item)
-                    playerOne.current_room.add_item(item)
-                    item.on_drop()
+                    if item.on_drop():
+                        playerOne.remove_item(item)
+                        playerOne.current_room.add_item(item)
 
                 # elif (playerOne.items == "torch"):
                 #     cmd = input("Are you sure? y/n \n")
