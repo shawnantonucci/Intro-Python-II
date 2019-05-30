@@ -12,10 +12,10 @@ class Room:
         self.e_to = None
         self.w_to = None
     def __repr__(self):
-        returnString = f"---------------\n\n{self.name}\n\n  {self.description}\n\n---------------"
-        returnString += f"Items around the room: \n"
+        returnString = f"---------------\n\nRoom: {self.name}\n\n  {self.description}\n\n-"
+        returnString += f"Items around the room- \n"
         returnString += f"{[item.name for item in self.items]}"
-        returnString += f"\n\n[{self.getRoomExitString()}]\n\n"
+        returnString += f"\n\nAvailable directions: [{self.getRoomExitString()}]\n"
         return returnString
     def getRoomInDirection(self, direction):
         if direction == "n":

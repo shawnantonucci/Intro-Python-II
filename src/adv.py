@@ -69,80 +69,6 @@ elif (player.currentRoom.is_light == False):
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-directions = ["n", "s", "w", "e"]
-
-# while True:
-#     print(f"\nCurrent room: {playerOne.current_room.name}")
-#     if (playerOne.current_room.is_light == True or [item.name == "torch" for item in playerOne.items]):
-#         print(f"Room description: {playerOne.current_room.description}")
-#         print(f"Items around the room: \n", end="")
-#         print([item.name for item in playerOne.current_room.items])
-#     elif (playerOne.current_room.is_light == False):
-#         print("Its pitch black in here. Need a light source")
-
-#     cmd = str(input("\nChoose a direction or Q to quit: \n\n"))
-#     print("\n\n\n------------------------------\n")
-
-#     # if (cmd == "p"):
-#     #    item_select = str(input("please select an item: "))
-#     #    if (playerOne.current_room.items):
-#     #        playerOne.add_item(item_select)
-
-#     # if (cmd == "i"):
-#     #     print(f"Inventory: {playerOne.items}")
-
-#     if (cmd == "" or not str):
-
-#         print("Please enter a direction or Q to exit the game. \n")
-#     if (cmd == "q"):
-#         print("Thanks for playing!")
-
-#         break
-#     elif (cmd in directions):
-#         try:
-#             playerOne.current_room = getattr(
-#                 playerOne.current_room, f"{cmd}_to")
-#         except:
-#             print("That direction doesn't exist..Try another direction..")
-
-#     elif (cmd == "i"):
-#         print("Inventory: ", end="")
-#         print([item.name for item in playerOne.items])
-#     else:
-#         cmds = cmd.split(" ")
-#         if (len(cmds) != 2):
-#             print("Bad command")
-#         else:
-#             verb, obj = cmds
-#             if (verb == "take"):
-#                 try:
-#                     item = [
-#                         x for x in playerOne.current_room.items if x.name == obj][0]
-#                     playerOne.current_room.remove_item(item)
-#                     playerOne.add_item(item)
-#                     item.on_take()
-#                 except IndexError:
-#                     print("Item not found")
-
-#             elif (verb == "drop"):
-#                 # if (playerOne.items != "torch"):
-#                 item = [x for x in playerOne.items if x.name == obj][0]
-#                 if item.on_drop():
-#                     playerOne.remove_item(item)
-#                     playerOne.current_room.add_item(item)
-
-#                 # elif (playerOne.items == "torch"):
-#                 #     cmd = input("Are you sure? y/n \n")
-#                 #     if (cmd == "y"):
-#                 #          print(f"{playerOne.items.name} dropped")
-#                 #     elif (cmd == "n"):
-#                 #          print("Good call")
-#                 #     else:
-#                 #          print("Player not holding that item")
-
-#             else:
-#                 print("Bad command")
-
 
 while True:
     cmd = input("-> ")
@@ -155,6 +81,7 @@ while True:
 
     if (cmd == "i"):
         print("Inventory: ", end="")
+        print(player.currentRoom)
         print([item.name for item in player.items])
     else:
         cmds = cmd.split(" ")
@@ -172,6 +99,7 @@ while True:
                     player.currentRoom.remove_item(item)
                     player.add_item(item)
                     item.on_take()
+                    print(player.currentRoom)
                 except IndexError:
                     print("Item not found")
 
@@ -181,15 +109,6 @@ while True:
                 if item.on_drop():
                     player.remove_item(item)
                     player.currentRoom.add_item(item)
-
-                # elif (playerOne.items == "torch"):
-                #     cmd = input("Are you sure? y/n \n")
-                #     if (cmd == "y"):
-                #          print(f"{playerOne.items.name} dropped")
-                #     elif (cmd == "n"):
-                #          print("Good call")
-                #     else:
-                #          print("Player not holding that item")
-
-            # else:
-            #     print("Bad command")
+                    print(player.currentRoom)
+                else:
+                    print(player.currentRoom)
